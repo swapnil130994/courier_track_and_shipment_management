@@ -16,7 +16,6 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-# Nginx config (simple)
 COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
