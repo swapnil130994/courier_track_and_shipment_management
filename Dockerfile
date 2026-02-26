@@ -5,10 +5,7 @@ WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
-    curl \
-    nginx
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    curl
 
 RUN docker-php-ext-install pdo pdo_mysql
 
@@ -16,8 +13,6 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-COPY nginx.conf /etc/nginx/nginx.conf
-
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
