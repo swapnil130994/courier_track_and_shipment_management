@@ -7,11 +7,15 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 RUN docker-php-ext-install pdo pdo_mysql
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Run composer AFTER installation
+RUN /usr/local/bin/composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
 
