@@ -5,7 +5,8 @@ WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
-    curl
+    curl \
+    nginx
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -15,6 +16,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-EXPOSE 8080
+# Nginx config (simple)
+COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
